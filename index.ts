@@ -1,7 +1,8 @@
 import app from "./server/app";
 
 const server = Bun.serve({
-  fetch: app.fetch
-})
+  fetch: app.fetch,
+});
 
-console.log(`Listening on ${process.env.BASE_URL}`);
+if (process.env.NODE_ENV === "development")
+  console.log("Listening on http://127.0.0.1:3000/api");
