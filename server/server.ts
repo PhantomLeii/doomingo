@@ -1,12 +1,18 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 
-const server = new Hono();
+const api = new Hono().basePath("/api");
 
-server.use(logger());
+api.use(logger());
 
-server.get("/", (c) => {
-  return c.json({ message: "Hello from HONO" });
+api.onError((err, c) => {
+  // send error to API monitoring service
+  console.error(`${err}`);
+  return c.json("Something went wrong", 500);
 });
 
-export default server;
+api.get("/", (c) => {
+  return c.json({ message: "Hello from Hono server" });
+});
+
+export default api;
